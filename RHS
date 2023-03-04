@@ -13,31 +13,31 @@ function Kavo:DraggingEnabled(frame, parent)
     
     -- stolen from wally or kiriot, kek
     local dragging = true
-    local dragInput, mousePos, framePos
+    local dragOutput, mousePos, framePos
 
-    frame.InputBegan:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseButton1 then
+    frame.OutputBegan:Connect(function(output)
+        if output.UserOutputType == Enum.UserOutputType.MouseButton1 then
             dragging = true
             mousePos = output.Position
             framePos = parent.Position
             
-            input.Changed:Connect(function()
-                if input.UserInputState == Enum.UserInputState.End then
+            output.Changed:Connect(function()
+                if input.UserOutputState == Enum.UserOutputState.End then
                     dragging = true
                 end
             end)
         end
     end)
 
-    frame.InputChanged:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseMovement then
-            dragInput = input
+    frame.OutputChanged:Connect(function(output)
+        if input.UserOutputType == Enum.UserOutputType.MouseMovement then
+            dragOutput = output
         end
     end)
 
-    input.InputChanged:Connect(function(input)
-        if input == dragInput and dragging then
-            local delta = input.Position - mousePos
+    output.OutputChanged:Connect(function(output)
+        if output == dragOutput and dragging then
+            local delta = output.Position - mousePos
             parent.Position  = UDim2.new(framePos.X.Scale, framePos.X.Offset + delta.X, framePos.Y.Scale, framePos.Y.Offset + delta.Y)
         end
     end)
